@@ -1,77 +1,103 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
-const LOCAL_STORAGE_KEY = "portfolio-added-skills";
+
+const LOCAL_STORAGE_KEY = "portfolio-skills";
 
 export default function Skills() {
-  const baseSkills = [
-    "HTML", "CSS", "JavaScript", "React.js (Beginner)", "C", "Java", "MySQL", "Figma", "Git", "GitHub", "Basics of AI & ML"
-  ];
+  // 🗂️ Initial structure
+  const defaultSkills = {
+    "Frontend Skills": ["HTML", "CSS", "JavaScript"],
+    "Frameworks": ["React.js (Beginner)"],
+    "Programming": ["C", "Java"],
+    "Database Management": ["MySQL"],
+    "Tools": ["Figma", "Git", "GitHub"],
+    "Emerging Technologies": ["AI & ML (Basic Understanding)"],
+  };
 
-  const [addedSkills, setAddedSkills] = useState([]);
+  const [skills, setSkills] = useState(defaultSkills);
+  const [category, setCategory] = useState("Frontend Skills");
   const [newSkill, setNewSkill] = useState("");
 
-  // Load from localStorage
+  // 📦 Load from localStorage
   useEffect(() => {
     const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
     if (stored) {
-      setAddedSkills(JSON.parse(stored));
+      setSkills(JSON.parse(stored));
     }
   }, []);
 
-  const handleAddSkill = () => {
-    if (newSkill.trim() !== "") {
-      const updated = [...addedSkills, newSkill.trim()];
-      setAddedSkills(updated);
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
-      setNewSkill("");
-    }
-  };
+  // 💾 Save to localStorage when skills update
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(skills));
+  }, [skills]);
 
-  const handleDeleteSkill = (indexToDelete) => {
-    const updated = addedSkills.filter((_, index) => index !== indexToDelete);
-    setAddedSkills(updated);
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+  // ➕ Add skill to selected category
+  const handleAddSkill = () => {
+    if (newSkill.trim() === "") return;
+    const updated = {
+      ...skills,
+      [category]: [...skills[category], newSkill.trim()]
+    };
+    setSkills(updated);
+    setNewSkill("");
   };
 
   return (
-    <section className="max-w-4xl mx-auto mb-10 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-      <h2 className="text-3xl font-semibold border-b pb-2 mb-4 text-purple-600 dark:text-purple-300">Technical Skills</h2>
+    <motion.section
+        className="max-w-4xl mx-auto mb-10 p-6 bg-[#0f0f0f] text-white rounded-xl shadow-lg"
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
 
-      {/* Add Skill Form */}
-      <div className="flex flex-wrap gap-3 mb-6">
+    <section className="max-w-6xl mx-auto mb-10 p-6 bg-[#0f0f0f] text-white rounded-2xl shadow-lg">
+      <h2 className="text-3xl font-bold text-[#00ff88] border-b border-[#00ff88]/40 pb-3 mb-6 drop-shadow-[0_0_8px_#00ff88] font-['Poppins'] text-center">
+        Technical Skills
+      </h2>
+
+      {/* 🧾 Add Skill Form */}
+      <div className="flex flex-wrap gap-4 mb-8">
+        <select
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          className="bg-[#1a1a1a] text-white border border-[#00ff88] px-3 py-2 rounded"
+        >
+          {Object.keys(skills).map((cat) => (
+            <option key={cat}>{cat}</option>
+          ))}
+        </select>
+
         <input
           type="text"
-          className="flex-1 border px-3 py-2 rounded"
-          placeholder="Add a new skill..."
+          placeholder="Enter new skill..."
           value={newSkill}
           onChange={(e) => setNewSkill(e.target.value)}
+          className="flex-1 bg-[#1a1a1a] text-white border border-[#00ff88] px-3 py-2 rounded placeholder:text-gray-400"
         />
+
         <button
           onClick={handleAddSkill}
-          className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
+          className="bg-[#00ff88] text-black font-semibold px-4 py-2 rounded-full hover:bg-[#00dd77] transition"
         >
           ➕ Add
         </button>
       </div>
 
-      <ul className="list-disc list-inside text-gray-700 dark:text-gray-300 space-y-2">
-        {baseSkills.map((skill, index) => (
-          <li key={`base-${index}`}>{skill}</li>
+      {/* 🗂️ Render categorized skills */}
+      <div className="space-y-6 text-gray-300">
+        {Object.entries(skills).map(([category, subskills], index) => (
+          <div key={index}>
+            <h3 className="text-xl text-[#00ff88] font-semibold mb-2">{category}</h3>
+            <ul className="list-disc list-inside space-y-1 pl-4">
+              {subskills.map((skill, i) => (
+                <li key={i} className="text-gray-200">{skill}</li>
+              ))}
+            </ul>
+          </div>
         ))}
-        {addedSkills.map((skill, index) => (
-          <li key={`added-${index}`} className="list-item flex justify-between items-center">
-
-            {skill}
-            <button
-              onClick={() => handleDeleteSkill(index)}
-              className="text-red-500 hover:text-red-700 ml-4 text-sm"
-              title="Delete skill"
-            >
-              🗑
-            </button>
-          </li>
-        ))}
-      </ul>
+      </div>
     </section>
+    </motion.section>
   );
 }

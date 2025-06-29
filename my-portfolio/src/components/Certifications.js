@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
 
 const LOCAL_STORAGE_KEY = "portfolio-added-certifications";
 
 export default function Certifications() {
   const baseCertifications = [
     {
-      title: "Automation Developer Associate (UiPath)",
+      title: "Automation Developer Associate – UiPath",
       description: "Certified by UiPath Academy",
       link: "https://drive.google.com/file/d/1qNa4u8WfEOYGYZagA47PN5m8onL7sDpT/view?usp=sharing"
     },
@@ -54,80 +56,86 @@ export default function Certifications() {
   };
 
   return (
-    <section className="max-w-4xl mx-auto mb-10 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-md">
-      <h2 className="text-3xl font-semibold border-b pb-2 mb-4 text-purple-600 dark:text-purple-300">
-        Certifications
-      </h2>
+  <motion.section
+    className="max-w-4xl mx-auto mb-10 p-6 bg-[#0f0f0f] text-white rounded-xl shadow-lg"
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold text-[#00ff88] border-b border-[#00ff88]/40 pb-3 mb-6 drop-shadow-[0_0_8px_#00ff88] font-['Poppins'] text-center">
+      Certifications
+    </h2>
 
-      {/* Add Certification Form */}
-      <div className="grid md:grid-cols-3 gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Certificate Title"
-          className="border px-3 py-2 rounded"
-          value={newCert.title}
-          onChange={(e) => setNewCert({ ...newCert, title: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Short Description"
-          className="border px-3 py-2 rounded"
-          value={newCert.description}
-          onChange={(e) => setNewCert({ ...newCert, description: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Certificate Link (URL)"
-          className="border px-3 py-2 rounded"
-          value={newCert.link}
-          onChange={(e) => setNewCert({ ...newCert, link: e.target.value })}
-        />
-      </div>
+    {/* Add Certification Form */}
+    <div className="grid md:grid-cols-3 gap-4 mb-6">
+      <input
+        type="text"
+        placeholder="Certificate Title"
+        className="bg-[#1a1a1a] text-white border border-[#00ff88] px-3 py-2 rounded placeholder:text-gray-400"
+        value={newCert.title}
+        onChange={(e) => setNewCert({ ...newCert, title: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Short Description"
+        className="bg-[#1a1a1a] text-white border border-[#00ff88] px-3 py-2 rounded placeholder:text-gray-400"
+        value={newCert.description}
+        onChange={(e) => setNewCert({ ...newCert, description: e.target.value })}
+      />
+      <input
+        type="text"
+        placeholder="Certificate Link (URL)"
+        className="bg-[#1a1a1a] text-white border border-[#00ff88] px-3 py-2 rounded placeholder:text-gray-400"
+        value={newCert.link}
+        onChange={(e) => setNewCert({ ...newCert, link: e.target.value })}
+      />
+    </div>
 
-      <div className="mb-6 text-right">
-        <button
-          onClick={handleAddCert}
-          className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
-        >
-          ➕ Add Certification
-        </button>
-      </div>
+    <div className="mb-6 text-right">
+      <button
+        onClick={handleAddCert}
+        className="bg-[#00ff88] text-black font-semibold px-5 py-2 rounded-full hover:bg-[#00dd77] transition hover:shadow-lg hover:shadow-[#00ff8855]"
+      >
+        ➕ Add Certification
+      </button>
+    </div>
 
-      <ul className="space-y-4">
-        {[...baseCertifications, ...addedCerts].map((cert, index) => {
-          const isUserAdded = index >= baseCertifications.length;
-          return (
-            <li
-              key={index}
-              className="list-item bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-sm flex justify-between items-start flex-wrap gap-4"
-            >
-              <div className="flex-1 min-w-[250px]">
-                <p className="font-semibold text-blue-700 dark:text-blue-300">{cert.title}</p>
-                <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">{cert.description}</p>
-              </div>
-              <div className="flex items-center gap-2">
-                <a
-                  href={cert.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+    <ul className="space-y-4">
+      {[...baseCertifications, ...addedCerts].map((cert, index) => {
+        const isUserAdded = index >= baseCertifications.length;
+        return (
+          <li
+            key={index}
+            className="bg-[#1a1a1a] border border-[#00ff88]/10 p-4 rounded-xl shadow flex justify-between items-start flex-wrap gap-4"
+          >
+            <div className="flex-1 min-w-[250px]">
+              <p className="text-lg font-semibold text-[#00ff88]">{cert.title}</p>
+              <p className="text-sm text-gray-300 mt-1">{cert.description}</p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <a
+                href={cert.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-1 text-sm bg-[#00ff88] text-black rounded hover:bg-[#00dd77] transition hover:shadow-md hover:shadow-[#00ff8870]"
+              >
+                📄 View Certificate
+              </a>
+              {isUserAdded && (
+                <button
+                  onClick={() => handleDeleteCert(index - baseCertifications.length)}
+                  className="text-red-500 hover:text-red-700 text-lg"
+                  title="Delete certification"
                 >
-                  📄 View Certificate
-                </a>
-                {isUserAdded && (
-                  <button
-                    onClick={() => handleDeleteCert(index - baseCertifications.length)}
-                    className="text-red-500 hover:text-red-700 text-sm"
-                    title="Delete certification"
-                  >
-                    🗑
-                  </button>
-                )}
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  );
+                  🗑
+                </button>
+              )}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+  </motion.section>
+);
 }

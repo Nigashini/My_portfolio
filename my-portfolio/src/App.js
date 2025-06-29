@@ -18,15 +18,11 @@ function App() {
   return (
     <Router>
       <div className={`font-sans ${darkMode ? "dark bg-gray-900 text-white" : "bg-gray-50 text-gray-900"}`}>
+        <div className="min-h-screen bg-gradient-to-b from-[#0f0f0f] via-[#071e17] to-[#00ff88] text-white">
         <Navbar />
         <div className="pt-20 px-4">
           <div className="flex justify-end mb-4">
-            <button
-              onClick={() => setDarkMode(!darkMode)}
-              className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
-            >
-              {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-            </button>
+            
           </div>
 
           <Routes>
@@ -37,6 +33,7 @@ function App() {
             <Route path="/certifications" element={<Certifications />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
+        </div>
         </div>
       </div>
     </Router>
