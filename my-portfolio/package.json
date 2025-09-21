@@ -2,6 +2,9 @@
   "name": "my-portfolio",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+  "node": "20.x"
+},
   "dependencies": {
     "autoprefixer": "^10.4.0",
     "framer-motion": "^12.19.2",
