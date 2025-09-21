@@ -18,13 +18,8 @@ export default function Hero() {
 
   return (
     <section className="relative overflow-hidden flex flex-col items-center justify-center text-center min-h-[90vh] px-4 bg-[#0f0f0f] text-white">
-      
-      {/* 🌌 Animated Stars Background */}
+      {/* 🌌 Animated Background */}
       <AnimatedBackground />
-
-      {/* ✅ Green Glow Background Aura */}
-      <div className="absolute -top-40 -left-40 w-[700px] h-[600px] bg-[#00ff88] opacity-20 blur-[160px] rounded-full z-0"></div>
-      <div className="absolute -bottom-20 right-0 w-[400px] h-[400px] bg-[#00ff88] opacity-10 blur-[130px] rounded-full z-0"></div>
 
       {/* 👋 Name Header */}
       <motion.h1
@@ -56,8 +51,8 @@ export default function Hero() {
 
       {/* 📥 Resume Button */}
       <motion.a
-        href="Nigashini.K (RESUME_Updated)_103.pdf"
-        download
+        href="Nigashini_k_71812205103.pdf"   // 👈 Always points to resume.pdf in public folder
+        download="Nigashini_Resume.pdf"
         onClick={() => setHoverActive(true)}
         className={`z-10 px-6 py-3 font-semibold rounded-full shadow-md flex items-center gap-2
           bg-[#00ff88] text-black
